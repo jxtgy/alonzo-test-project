@@ -3,36 +3,76 @@ package main
 import (
 	"fmt"
 	"github.com/garyburd/redigo/redis"
+	"time"
 )
 
 func main() {
-	redisConn := redisPool.Pool.Get()
+	redisConn, err := redis.Dial("tcp", ":6379")
+	if err != nil {
+		fmt.Println("Dial err")
+		return
+	}
 	defer redisConn.Close()
 
-	cnt := 100000
-	prefix := "alonzo_test"
-	key := ""
+	cnt := 1112
+
+	key := "alonzo_test_hash"
+	array := []int{}
 	for n := 1; n < cnt; n++ {
-		redis.Int(redisConn.Do("sadd", key, n))
+		array = append(array, n)
+		//redisConn.Do("hset", key, n, 1)
+	}
+	fmt.Println("len:", len(array))
+	s := time.Now()
+
+	_, err = redis.Ints(redisConn.Do("hmget", key, array))
+	if err != nil {
+		fmt.Println("hmget error")
+		return
 	}
 
-	for n := 1; n < cnt; n++ {
-		memberKey := fmt.Sprintf("%s", n)
-		redis.Int(redisConn.Do("SISMEMBER", memberKey))
-	}
+	fmt.Println(time.Since(s))
 
+	/*s1 := time.Now()
 	for n := 1; n < cnt; n++ {
-		memberKey := fmt.Sprintf("%s", n)
-		redisConn.Send("SISMEMBER", memberKey)
+		redisConn.Send("hget", key, n)
 	}
 
 	if err = redisConn.Flush(); err != nil {
 		fmt.Println("flush err")
-		return -1
 	}
 
 	for n := 1; n < cnt; n++ {
-		redis.Int(redisConn.Receive())
+		redisConn.Receive()
 	}
-	fmt.Println("end")
+	fmt.Println(time.Since(s1))
+	*/
+
+	/*
+		key := "alonzo_test"
+		for n := 1; n < cnt; n++ {
+			redisConn.Do("sadd", key, n)
+		}
+		s := time.Now()
+
+		for n := 1; n < cnt; n++ {
+			redisConn.Do("SISMEMBER", key, n)
+		}
+
+		fmt.Println(time.Since(s))
+
+		for n := 1; n < cnt; n++ {
+			redisConn.Send("SISMEMBER", n)
+		}
+
+		if err = redisConn.Flush(); err != nil {
+			fmt.Println("flush err")
+		}
+
+		for n := 1; n < cnt; n++ {
+			redisConn.Receive()
+		}
+		fmt.Println(time.Since(s))
+	*/
+
 }
