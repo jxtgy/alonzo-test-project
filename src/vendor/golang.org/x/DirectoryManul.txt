@@ -1,0 +1,4 @@
+$GOPATH/src/golang.org/x 这个目录是 以前的google官方库目录，
+最新的目录是 $GOPATH/src/github.com/golang
+虽然有些库的下载链接放在了新目录，但是下载下来以后要放在老目录里面 import，比如：
+ import "golang.org/x/text/encoding/simplifiedchinese"

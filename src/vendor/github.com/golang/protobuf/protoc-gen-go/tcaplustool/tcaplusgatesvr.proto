@@ -1,0 +1,1154 @@
+syntax = "proto2";
+import "google/protobuf/descriptor.proto";
+package tcaplusgatesvr;
+
+extend google.protobuf.FieldOptions
+//extend descriptor.FieldOptions
+{
+    optional int32 b_key = 60000;
+    optional int32 t_int8 = 60001;
+    optional int32 t_uint8 = 60002;
+    optional int32 t_int16 = 60003;
+    optional int32 t_uint16 = 60004;
+    optional int32 t_blob = 60005;
+    optional int32 b_custom_type = 60006;
+}
+extend google.protobuf.MessageOptions
+//extend descriptor.MessageOptions
+{
+    optional string table_name = 70002;
+}
+
+message DBUserSevenSignUp
+{
+    option (table_name) = "user_seven_signup";
+
+    required int32 appid = 1 [(b_key) = 1];
+    required uint64 uin = 2 [(b_key) = 1];
+    optional uint32 last_sign_time = 3 ;
+    optional uint32 sign_num = 4;
+}
+message DBUserBestRecord
+{
+    option (table_name) = "user_best_record";
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32 appid = 2 [(b_key) = 1];
+    required string rule = 3 [(b_key) = 1];
+    optional string best_record = 4 [(b_custom_type)=1, (t_blob)=1];
+    optional int32 best_score = 5;
+    optional int32 finish_time = 6;
+}
+
+// role_activity
+message DBRoleActivity
+{
+    option (table_name) = "role_activity";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    required uint32 appid = 2 [(b_key) = 1];
+    optional string signup = 3 [(b_custom_type)=1, (t_blob)=1];
+    optional string roulette = 4 [(b_custom_type)=1, (t_blob)=1];
+    optional string mission_lottery = 5 [(b_custom_type)=1, (t_blob)=1];
+    optional string newer_gift = 6 [(b_custom_type)=1, (t_blob)=1];
+    optional string broke_award = 7 [(b_custom_type)=1, (t_blob)=1];
+}
+// user_account2id_info
+message DBUserAccount2IdInfo
+{
+    option (table_name) = "user_account2id_info";
+
+    required string OpenID = 1 [(b_key) = 1];
+    optional uint64 Uin= 2;
+    optional int32  GameAppID= 3;
+    optional uint32 AddTime = 4;
+    optional int32  Status  = 5 [(b_custom_type)=1, (t_int8)=1];
+    optional uint32 BlockTime = 6;
+}
+// user_account2id_new
+message DBUserAccount2IdNew
+{
+    option (table_name) = "user_account2id_new";
+
+    required string OpenID = 1 [(b_key) = 1];
+    required int32  PlatID = 2 [(b_key) = 1];
+    optional uint64 Uin= 3;
+    optional int32  GameAppID= 4;
+    optional uint32 AddTime = 5;
+    optional int32  Status  = 6 [(b_custom_type)=1, (t_int8)=1];
+    optional uint32 BlockTime = 7;
+    optional uint32 HealthBlockBeginTime = 8; // 成长守护的禁玩开始时间
+    optional uint32 HealthBlockEndTime = 9;   // 成长守护的禁玩结束时间
+    optional string HealthBlockMsg = 10;      // 成长守护的禁玩提示消息
+}
+// user_id2account_info
+message DBUserId2AccountInfo
+{
+    option (table_name) = "user_id2account_info";
+
+    required uint64 Uin = 1 [(b_key) = 1];
+    required int32  GameAppID = 2 [(b_key) = 1];
+    optional string AppID = 3;
+    optional string OpenID = 4;
+    optional string AccessToken = 5;
+    optional string Pf = 6;
+    optional string PfKey = 7;
+    optional string PayToken = 8;
+    optional int32  ClientType = 9;
+    optional int32  AccountType = 10;
+	optional uint32 AddTime = 11;
+}
+message DBNQGUserScore
+{
+    option (table_name) = "nqg_user_score";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32 sys_id = 2 [(b_key) = 1];
+    optional int32 score = 3;
+    optional int32 win= 4;
+    optional int32 lose = 5;
+    optional int32 equ = 6;
+    optional int32 esc = 7;
+    optional int32 invalid = 8;
+    optional int64 time = 9;
+}
+message DBNQGUserInfo
+{
+    option (table_name) = "nqg_user_info";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32 sys_id = 2 [(b_key) = 1];
+    optional string info = 3 ;
+}
+message DBNQGUserCoin
+{
+    option (table_name) = "nqg_user_coin";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32 sys_id = 2 [(b_key) = 1];
+    optional int64 coin = 3;
+    optional int64 ext_1 = 4;
+    optional int64 ext_2 = 5;
+}
+message DBNQGNewerGift
+{
+    option (table_name) = "nqg_newer_gift";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32  appid = 2 [(b_key) = 1];
+    required int32  subid = 3 [(b_key) = 1];
+    optional uint64 last_login_time = 4;
+    optional int32  gift_delivered  = 5 [(b_custom_type)=1, (t_int8)=1];
+    optional int32 reserve1 = 6;
+    optional int32 reserve2 = 7;
+}
+message DBNQGTrunkMission
+{
+    option (table_name) = "nqg_trunk_mission";
+
+    required uint64 uin = 1[(b_key)=1];
+    required string rule = 2[(b_key)=1];
+    required string level= 3[(b_key)=1];
+
+    optional string missions = 4[(b_custom_type)=1, (t_blob)=1];
+}
+
+message DBNQGBranchMission
+{
+    option (table_name) = "nqg_branch_mission";
+
+    required uint64 uin = 1[(b_key)=1];
+    optional string missions = 2[(b_custom_type)=1, (t_blob)=1];
+}
+
+message DBPlayerDailyRoom
+{
+    option (table_name) = "player_daily_room";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    optional uint32 last_update_time = 2;
+    optional string daily_room_data = 3 [(b_custom_type)=1, (t_blob)=1];
+}
+message DBPlayerGameRoom
+{
+    option (table_name) = "player_game_room";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    required string rule = 2[(b_key) = 1];
+    required string level  = 3 [(b_key) = 1];
+    required uint32 room_type = 4 [(b_key) = 1];
+
+    optional string room_data = 5 [(b_custom_type)=1, (t_blob)=1];
+    optional uint32 last_update_time = 6;
+
+}
+message DBPlayerBrokeAward
+{
+    option (table_name) = "player_broke_award";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    optional uint32 last_award_time = 2;
+    optional uint32 award_times = 3;
+}
+message DBPlayerExt
+{
+    option (table_name) = "player_ext";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    optional int32 new_gift_status = 2[(b_custom_type)=1, (t_int8)=1];
+    optional string rule_prefer = 3 [(b_custom_type)=1, (t_blob)=1];
+}
+message DBPlayerGameStatis
+{
+    option (table_name) = "player_game_statis";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    optional uint32 last_update_time = 2;
+    optional string player_rule_report = 3 [(b_custom_type)=1, (t_blob)=1];
+}
+message DBDailyGameTableStatis
+{
+    option (table_name) = "daily_game_table_statis";
+    required string rule = 1 [(b_key) = 1];
+    required string level = 2 [(b_key) = 1];
+    required uint32 room_type = 3 [(b_key) = 1];
+
+    optional uint32 enter_times = 4;    //进房次数
+    optional int32 coin_high = 5;       // 最高获取金币数
+    optional int32 coin_low = 6;        // 最低获取金币数
+    optional int32 coin_total = 7;      // 获取的总的金币数
+    optional int32 score_high = 8;      // 最高获取积分数
+    optional int32 score_low = 9;       // 最低获取积分数
+    optional int32 score_total = 10;     // 获取的总的金币数
+    optional int32 win_multi_high = 11;              // 最大番
+    optional uint32 last_reset_time = 12;              // last_reset_time
+}
+message DBNQGHiddenMission
+{
+    option (table_name) = "nqg_hidden_mission";
+
+    required uint64 uin = 1[(b_key)=1];
+    optional string missions = 2[(b_custom_type)=1, (t_blob)=1];
+}
+message DBNQGRushMission
+{
+    option (table_name) = "nqg_rush_mission";
+
+    required uint64 uin = 1[(b_key)=1];
+    required string rule = 2[(b_key)=1];
+    required string level= 3[(b_key)=1];
+
+    optional string missions = 4[(b_custom_type)=1, (t_blob)=1];
+}
+
+
+message DBNQGUserItem
+{
+    option (table_name) = "nqg_user_item";
+
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32 sys_id = 2 [(b_key) = 1];
+    required int32 item_id = 3 [(b_key) = 1]; //道具id， 默认为0
+    optional int32 sub_id = 4 [(b_key) = 1]; //道具id的子id
+    optional uint32 last_tm = 5;//最后一次修改时间
+    optional int32 amount = 6; //道具存量
+    optional int32 res_1 = 7;  //道具存量
+    optional int32 res_2 = 8;
+    optional int32 res_3 = 9;
+    optional int64 res_4 = 10;
+
+}
+
+//夺宝商城的用户夺宝记录表
+message DuoBaoUserHistory
+{
+    option (table_name) = "duobao_user_his";
+	required uint64 uin = 1 [(b_key) = 1];
+	required int32 goods_id = 2[(b_key) = 1];
+	required int32 idx = 3[(b_key) = 1];//第几期
+	required int32 app_id = 4;
+	required uint32 action_time = 5;//参与时间
+	required int32 times = 6;//参与次数
+	required string codes = 7;//买到的码(最多10个)
+	required int32 jq_cost = 8;//奖券花费
+	required int32 open_result=9;//0:未开奖，1：正常开奖，2：流拍
+	required int32 is_winner = 10;//是否中奖
+	required int32 rewarded = 11;//0:等待发奖未发奖,1:等待发货未发货，10:自动发奖已发奖;11:实物发货已发货
+	required string deliver_id = 12;//快递单号
+	required string deliver_com = 13;//快递公司名字
+    optional string luck_single_code = 14;//中奖码
+    optional int32  is_robot=15;//1:是robot;0:真人用户
+}
+
+//兑换商城的用户兑换记录表
+message DuoBaoDuihuanUserHistory
+{
+    option (table_name) = "duobao_duihuan_user_his";
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32 goods_id = 2[(b_key) = 1];
+    required int32 idx = 3[(b_key) = 1];//第几期
+    required int32 app_id = 4;
+    required uint32 action_time = 5;//参与时间
+    required int32 jq_cost = 6;//奖券花费
+    required int32 rewarded = 7;//
+    required string deliver_id = 8;//快递单号
+    required string deliver_com = 9;//快递公司名字
+    required int32 count=10;//一次性兑换了几个物品
+}
+//夺宝商城用户详细的夺宝福码信息
+message DuoBaoUserHistoryCodes
+{
+    option (table_name) = "duobao_user_his_codes";
+    required uint64 uin = 1 [(b_key) = 1];
+    required int32 goods_id = 2[(b_key) = 1];
+    required int32 idx = 3[(b_key) = 1];//第几期
+    required string all_codes = 4;//所有的码
+
+}
+//夺宝商城用户联系方式信息
+message DuoBaoUserContact
+{
+    option (table_name) = "duobao_user_contact";
+    required uint64 uin = 1[(b_key) = 1];
+    required int32 app_id = 2[(b_key) = 1];
+    required string real_name = 3;//真实姓名
+    required string qq = 4;//qq号
+    required string phone_num = 5;//
+    required string post_code = 6;//邮编
+    required string address = 7;//地址
+    optional string identity_id = 8;//身份证号
+
+}
+
+message DBRoleMail
+{
+    option (table_name) = "role_mail";
+    required uint64 uin = 1[(b_key)=1];
+    required int64 mail_id = 2[(b_key)=1];
+    optional uint32 send_time = 3;
+    optional uint32 flag = 4;
+    optional int32 state = 5;
+    optional string mail_data = 6[(b_custom_type)=1, (t_blob)=1];
+}
+message DBRoleGame
+{
+    option (table_name) = "role_game";
+    required uint64 uin = 1[(b_key)=1];
+    optional uint32 last_update_time = 2;
+    optional string daily_game = 3[(b_custom_type)=1, (t_blob)=1];
+    optional string game_record = 4[(b_custom_type)=1, (t_blob)=1];
+}
+message DBRoleData
+{
+    option (table_name) = "role_data";
+    required uint64 uin = 1[(b_key)=1];
+    optional string data_role_sim = 2[(b_custom_type)=1, (t_blob)=1];
+    optional string data_role_prop = 3[(b_custom_type)=1, (t_blob)=1];
+    optional string data_mail_sim = 4[(b_custom_type)=1, (t_blob)=1];
+    optional string data_notice_activity = 5[(b_custom_type)=1, (t_blob)=1];
+    optional int32 create_time = 6;
+    optional int32 login_time = 7;
+    optional int32 logout_time = 8;
+    optional int32 online_time = 9;
+}
+message DBGameReportDaily
+{
+    option (table_name) = "game_daily_report";
+    required uint32 date_time = 1[(b_key)=1];
+    optional string rule = 2[(b_key)=1];
+    optional string level = 3[(b_key)=1];
+    optional uint32 room_type = 4[(b_key)=1];
+
+    optional uint32 time_total = 5;
+    optional uint32 enter_times = 6;
+    optional uint32 coin_total = 7;
+    optional uint32 update_time = 8;
+}
+
+// 世界排行榜
+message DBWorldRank
+{
+    option (table_name) = "world_rank";
+    required uint32 rank_id = 1[(b_key)=1];
+    required uint32 app_id = 2[(b_key)=1];
+    optional string rank_data = 3[(b_custom_type)=1, (t_blob)=1];
+}
+
+
+message DBNQGHealthGame
+{
+    option (table_name) = "nqg_health_game";
+    required string openid = 1[(b_key)=1];
+    required uint64 uin = 2[(b_key)=1];
+
+    optional string healthinfo = 3[(b_custom_type)=1, (t_blob)=1];
+
+}
+
+message DBNQGRedPackage
+{
+    option (table_name) = "nqg_redpacket";
+    required int64 id = 1[(b_key)=1];
+    optional uint64 uin = 2;
+    optional int32 status = 3;
+    optional uint32 total_num = 4;
+    optional uint32 send_num = 5;
+    optional uint32 total_coin = 6;
+    optional uint32 send_coin = 7;
+    optional uint64 start_time = 8;
+    optional uint64 end_time = 9;
+    optional string title_text = 10;
+    optional string send_detail = 11[(b_custom_type)=1, (t_blob)=1];
+}
+
+
+// 玩家需要扣减的钻石记录
+message DBRoleDiamond
+{
+    option (table_name) = "role_diamond";
+    required uint64 uin = 1[(b_key)=1];
+    required uint32 appid = 2[(b_key)=1];
+    optional string diamonds = 3[(b_custom_type)=1, (t_blob)=1];
+}
+
+// 在线统计表
+message DBOnlineCnt
+{
+    option (table_name) = "nqg_onlinecnt";
+    required string gameappid = 1[(b_key)=1];
+    required int32 timekey = 2[(b_key)=1];
+    required string gsid = 3[(b_key)=1];
+	optional int32 zoneareaid = 4;
+    optional int32 onlinecntios = 5;
+    optional int32 onlinecntandroid = 6;
+}
+
+// 防沉迷信息记录
+message DBHealthGameInfo
+{
+    optional string account_id = 1; // openid
+    optional string character_id = 2; // 角色id
+    optional uint32 is_adult = 3;
+    optional uint32 game_status = 4; // 状态
+    optional uint64 status_start_time = 5; // 状态开始时间
+    optional uint32 accumu_time = 6; // 累计在线
+    optional uint32 rest_time = 7; // 休息时间
+    optional uint32 limit_time = 8; // 限制条件时间
+    optional uint64 today_first_limit_time = 9; // 今日首次下线时间
+    optional uint32 rest_time_remain = 10; // 剩余休息时间
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// tcaplus 操作指令
+enum TcaplusAPICmd
+{
+    ENTCAPLUS_API_MIN = 0;
+
+    ENTCAPLUS_API_REQ_GET = 1;                //  单条查询请求
+    ENTCAPLUS_API_RSP_GET = 2;                //  单条查询应答
+
+    ENTCAPLUS_API_REQ_DELETE = 3;             //  删除请求
+    ENTCAPLUS_API_RSP_DELETE = 4;             //  删除应答
+
+    ENTCAPLUS_API_REQ_INSERT = 5;             //  插入请求
+    ENTCAPLUS_API_RSP_INSERT = 6;             //  插入应答
+
+    ENTCAPLUS_API_REQ_UPDATE = 7;             //  请求数据
+    ENTCAPLUS_API_RSP_UPDATE = 8;             //  请求数据
+
+    ENTCAPLUS_API_REQ_REPLACE = 9;            //  替换/插入请求
+    ENTCAPLUS_API_RSP_REPLACE = 10;           //  替换/插入应答
+
+    ENTCAPLUS_API_REQ_INCREASE = 11;          //  增量更新请求
+    ENTCAPLUS_API_RSP_INCREASE = 12;          //  增量更新应答
+
+    ENTCAPLUS_API_REQ_BATCH_GET = 13;         //  请求数据
+    ENTCAPLUS_API_RSP_BATCH_GET = 14;         //  请求数据
+
+    ENTCAPLUS_API_REQ_LIST_GETALL = 15;                //  单条查询请求
+    ENTCAPLUS_API_RSP_LIST_GETALL = 16;                //  单条查询应答
+
+    ENTCAPLUS_API_REQ_LIST_DELETEALL = 17;             //  删除请求
+    ENTCAPLUS_API_RSP_LIST_DELETEALL = 18;             //  删除应答
+
+    ENTCAPLUS_API_REQ_LIST_DELETEBATCH = 19;             //  list批量删除请求
+    ENTCAPLUS_API_RSP_LIST_DELETEBATCH = 20;             //  list批量删除应答
+
+    ENTCAPLUS_API_REQ_LIST_GET = 21;             //  请求数据
+    ENTCAPLUS_API_RSP_LIST_GET = 22;             //  请求数据
+
+    ENTCAPLUS_API_REQ_LIST_ADDAFTER = 23;            //  替换/插入请求
+    ENTCAPLUS_API_RSP_LIST_ADDAFTER = 24;           //  替换/插入应答
+
+    ENTCAPLUS_API_REQ_LIST_DELETE = 25;          //  增量更新请求
+    ENTCAPLUS_API_RSP_LIST_DELETE = 26;          //  增量更新应答
+
+    ENTCAPLUS_API_REQ_LIST_REPLACE = 27;         //  请求数据
+    ENTCAPLUS_API_RSP_LIST_REPLACE = 28;         //  请求数据
+
+    ENTCAPLUS_API_REQ_GET_BY_PARTKEY = 29;    //  部分Key查询请求
+    ENTCAPLUS_API_RSP_GET_BY_PARTKEY = 30;    //  部分Key查询应答
+    ENTCAPLUS_API_MAX = 100;
+}
+
+// Gate 服务错误码
+enum SSDBTcaplusErr
+{
+    SSDBTCAPLUS_ERR_CMD = 256100;   // cmd error
+    SSDBTCAPLUS_ERR_TCAPLUSID = 256101;   // tcaplus id error
+    SSDBTCAPLUS_ERR_TCAPLUS_SEND = 256102;   // send request failed.
+    SSDBTCAPLUS_ERR_TCAPLUS_GETREQUEST = 256103;   // GetRequest Failed.
+    SSDBTCAPLUS_ERR_TCAPLUS_ADDFIELDNAME = 256105;   // AddFieldName Failed.
+    SSDBTCAPLUS_ERR_TCAPLUS_ADDRECORD = 256106;   // AddRecord Failed.
+    SSDBTCAPLUS_ERR_TCAPLUS_DATATYPE = 256107;   // FieldType error.
+    SSDBTCAPLUS_ERR_TCAPLUS_SETKEY = 256108;   // FieldType error.
+    SSDBTCAPLUS_ERR_TCAPLUS_GETRECORD_VAL = 256109;
+    SSDBTCAPLUS_ERR_TCAPLUS_GETRECORD_KEY = 256110;
+    SSDBTCAPLUS_ERR_TCAPLUS_CMD = 256111;
+    SSDBTCAPLUS_ERR_TCAPLUS_INCREASE_MISS_OPERATION = 256112;
+}
+
+////////////////////////////////// plain define ///////////////////////////////////
+enum TcaplusDataType
+{
+    EN_TCAPLUS_DATATYPE_MIN = 0;
+    EN_TCAPLUS_DATATYPE_INT8 = 1;
+    EN_TCAPLUS_DATATYPE_UINT8 = 2;
+    EN_TCAPLUS_DATATYPE_INT16 = 3;
+    EN_TCAPLUS_DATATYPE_UINT16 = 4;
+    EN_TCAPLUS_DATATYPE_INT32 = 5;
+    EN_TCAPLUS_DATATYPE_UINT32 = 6;
+    EN_TCAPLUS_DATATYPE_INT64 = 7;
+    EN_TCAPLUS_DATATYPE_UINT64 = 8;
+    EN_TCAPLUS_DATATYPE_STRING = 9;
+    EN_TCAPLUS_DATATYPE_BLOB = 10;
+    EN_TCAPLUS_DATATYPE_MAX = 12;
+
+}
+enum DataColumnFlag
+{
+    EN_DATA_COLUMN_FLAG_NORMAL = 0; //  字段设置
+    EN_DATA_COLUMN_FLAG_FOR_RSP_SET = 1; //  做为查询标记，查询无意义，返回设置。
+}
+
+message DataPlainColumn
+{
+    required TcaplusDataType type = 1;
+    required string name = 2;
+    optional uint64 value_uint = 3;
+    optional int64 value_int = 4;
+    optional bytes value_str = 5;
+    optional int32 flag = 6;
+}
+
+
+message DataPlainRow
+{
+    optional DataPlainColumn key_1 = 1;
+    optional DataPlainColumn key_2 = 2;
+    optional DataPlainColumn key_3 = 3;
+    optional DataPlainColumn key_4 = 4;
+
+    repeated DataPlainColumn values = 5;                    // value 列表  get 请求 value中 value 不需要填
+    optional int64  index = 6;                              // 行索引
+}
+
+
+message DataTcaplusRequestOption
+{
+    optional uint32 zone_id                 = 1;                    // 切换请求操作的游戏区ID
+    optional bytes  user_buff               = 2;                    // 设置用户缓存，应答将携带返回
+
+    //设置响应标志。主要用于Generic表的insert、increase、replace、请求标志。
+    //0标志只需返回成功与否；1表示还只返回变更字段的最新数据；2表示须返回变更记录的所有字段最新数据。
+    optional uint32 result_flag             = 3;
+
+    //设置空记录自增允许标志。用于Generic表的increase操作。
+    //空记录自增允许标志。0表示不允许。
+    //1表示允许，当记录不存在时，将按字段默认值创建新记录再自增；若无默认值则返回错误
+    optional uint32 addable_increase_flag   = 4;
+    optional uint32 flags                   = 5;                  //
+
+
+    //当设置了 TCAPLUS_FLAG_FETCH_ONLY_IF_EXPIRED
+    // 标志位时，用于指定记录过期时间，目前仅仅TCAPLUS_API_BATCH_GET_REQ操作支持指定记录过期时间。
+    // expire_time. 过期时间，单位为秒
+    optional uint32 expire_time             = 6;
+}
+
+//  对应 TcaplusServiceResponse
+message DataTcaplusResponseOption
+{
+    optional uint32 zone_id                     = 1;               // 获取ZoneId
+    optional bytes  user_buff                   = 2;               // 用户缓存，应答将携带返回
+    optional uint32 result_flag                 = 3;               // 响应标志
+    optional uint32 addable_increase_flag       = 4;               // 空记录自增允许标志
+    optional uint32 flags                       = 5;               // 标志
+    optional int32  affected_record_num         = 6;               // 获取受影响的Records的条数.
+    optional string last_error                  = 7;               // 最后的错误信息
+    optional int32 partkey_total_num            = 8;
+    optional int32 partkey_suc_num              = 9;
+    optional int32 partkey_failed_num           = 10;
+    optional int32 partkey_offset               = 11;
+
+}
+
+enum OperationType
+{
+    EN_OPERATION_TYPE_PLUS = 1;
+    EN_OPERATION_TYPE_MINUS = 2;
+}
+message DataOperation  // set AddValueOperation param
+{
+    required string field_name = 1;                  // Operation FieldName
+    required OperationType operation_type = 2;
+}
+
+// 单keys 请求
+message SSMsgReqTcaplusPlainTable
+{
+    required int32 tcaplus_gate_id   = 1;                        // tcaplusgate 配置的id  对应到一个DB thistime == appid
+    required string table_name   = 2;                            // table name
+    required TcaplusAPICmd              api_cmd         = 3;     // cmd
+    required DataPlainRow               request_set     = 4;     // 请求行信息
+    optional DataTcaplusRequestOption   options         = 5;     // 请求选项
+    optional DataOperation              operation       = 6;     // TCAPLUS_API_INCREASE_REQ required
+}
+// 单keys 请求应答
+message SSMsgRspTcaplusPlainTable
+{
+    required TcaplusAPICmd              api_cmd = 1;          // cmd
+    required int32                      result  = 2;            // 操作结果
+    repeated DataPlainRow               response_rows = 3;      // 响应行信息
+    optional DataTcaplusResponseOption  options = 4;            // 响应选项
+}
+
+
+// 批量请求
+message SSMsgReqTcaplusPlainTableBatch
+{
+    required int32 tcaplus_gate_id   = 1;                        // tcaplusgate 配置的id  对应到一个DB thistime == appid
+    required string table_name   = 2;                            // table name
+    required TcaplusAPICmd              api_cmd         = 3;     // cmd
+    repeated DataPlainRow               request_keys    = 4;    // 请求行信息 key内容
+    optional DataPlainRow               request_feild   = 5;     // 请求行信息
+    optional DataTcaplusRequestOption   options         = 6;     // 请求选项
+}
+
+// 批量请求 应答
+message SSMsgRspTcaplusPlainTableBatch
+{
+    optional TcaplusAPICmd              table_cmd = 1;          // cmd
+    required int32                      result  = 2;            // 操作结果
+    repeated DataPlainRow               response_rows = 3;      // 响应行信息 如果需要key key需要设置
+    optional DataTcaplusResponseOption  options = 4;            // 响应选项
+}
+
+service TcaplusGateSvr{
+    rpc RequestPlain(SSMsgReqTcaplusPlainTable) returns(SSMsgRspTcaplusPlainTable) { }
+    rpc RequestPlainBatch(SSMsgReqTcaplusPlainTableBatch) returns(SSMsgRspTcaplusPlainTableBatch) { }
+}
+
+
+// api define tcaplus_err_code.h do not edit it
+// 对应 result 值
+// 大部分时候 关注的 是 记录是否存在
+// TXHDB_ERR_RECORD_NOT_EXIST
+// TXHDB_ERR_INDEX_NO_EXIST
+// SVR_ERR_FAIL_RECORD_EXIST
+enum  TcaplusAPIErr
+{
+    API_ERR_OVER_MAX_KEY_FIELD_NUM                  								 = -0x00000113;
+    API_ERR_OVER_MAX_VALUE_FIELD_NUM               								 = -0x00000213;
+    API_ERR_OVER_MAX_FIELD_NAME_LEN                								 = -0x00000313;
+    API_ERR_OVER_MAX_FIELD_VALUE_LEN           									 = -0x00000413;
+    API_ERR_FIELD_NOT_EXSIST         												 = -0x00000513;
+    API_ERR_FIELD_TYPE_NOT_MATCH          											 = -0x00000613;
+    API_ERR_PARAMETER_INVALID           											 = -0x00000713;
+    API_ERR_OPERATION_TYPE_NOT_MATCH         										 = -0x00000813;
+    API_ERR_PACK_MESSAGE         												     = -0x00000913;
+    API_ERR_UNPACK_MESSAGE           												 = -0x00000a13;
+    API_ERR_PACKAGE_NOT_UNPACKED         											 = -0x00000b13;
+    API_ERR_OVER_MAX_RECORD_NUM         											 = -0x00000c13;
+    API_ERR_INVALID_COMMAND           												 = -0x00000d13;
+    API_ERR_NO_MORE_RECORD         												 = -0x00000e13;
+    API_ERR_OVER_KEY_FIELD_NUM          											 = -0x00000f13;
+    API_ERR_OVER_VALUE_FIELD_NUM           										 = -0x00001013;
+    API_ERR_OBJ_NEED_INIT         													 = -0x00001113;
+    API_ERR_INVALID_DATA_SIZE          											 = -0x00001213;
+    API_ERR_INVALID_ARRAY_COUNT           											 = -0x00001313;
+    API_ERR_INVALID_UNION_SELECT          											 = -0x00001413;
+    API_ERR_MISS_PRIMARY_KEY          												 = -0x00001513;
+    API_ERR_UNSUPPORT_FIELD_TYPE           										 = -0x00001613;
+    API_ERR_ARRAY_BUFFER_IS_SMALL         											 = -0x00001713;
+    API_ERR_IS_NOT_WHOLE_PACKAGE          											 = -0x00001813;
+    API_ERR_MISS_PAIR_FIELD           												 = -0x00001913;
+    API_ERR_GET_META_ENTRY          												 = -0x00001a13;
+    API_ERR_GET_ARRAY_META          												 = -0x00001b13;
+    API_ERR_GET_ENTRY_META           												 = -0x00001c13;
+    API_ERR_INCOMPATIBLE_META         												 = -0x00001d13;
+    API_ERR_PACK_ARRAY_DATA          												 = -0x00001e13;
+    API_ERR_PACK_UNION_DATA          												 = -0x00001f13;
+    API_ERR_PACK_STRUCT_DATA          												 = -0x00002013;
+    API_ERR_UNPACK_ARRAY_DATA          											 = -0x00002113;
+    API_ERR_UNPACK_UNION_DATA           											 = -0x00002213;
+    API_ERR_UNPACK_STRUCT_DATA         											 = -0x00002313;
+    API_ERR_INVALID_INDEX_NAME          											 = -0x00002413;
+    API_ERR_MISS_PARTKEY_FIELD          											 = -0x00002513;
+    API_ERR_ALLOCATE_MEMORY          												 = -0x00002613;
+    API_ERR_GET_META_SIZE          												 = -0x00002713;
+    API_ERR_MISS_BINARY_VERSION           											 = -0x00002813;
+    API_ERR_INVALID_INCREASE_FIELD         										 = -0x00002913;
+    API_ERR_INVALID_RESULT_FLAG          											 = -0x00002a13;
+    API_ERR_OVER_MAX_LIST_INDEX_NUM          										 = -0x00002b13;
+    API_ERR_INVALID_OBJ_STATUE          											 = -0x00002c13;
+    API_ERR_INVALID_REQUEST          												 = -0x00002d13;
+    API_ERR_INVALID_SHARD_LIST           											 = -0x00002e13;
+    API_ERR_TABLE_NAME_MISSING         											 = -0x00002f13;
+    API_ERR_SOCKET_SEND_BUFF_IS_FULL          										 = -0x00003013;
+    API_ERR_INVALID_MAGIC          												 = -0x00003113;
+    API_ERR_TABLE_IS_NOT_EXIST          											 = -0x00003213;
+    API_ERR_SHORT_BUFF                 											 = -0x00003313;
+    API_ERR_FLOW_CONTROL                 											 = -0x00003413;
+    API_ERR_COMPRESS_SWITCH_NOT_SUPPORTED_REGARDING_THIS_CMD      					 = -0x00003513;
+    API_ERR_FAILED_TO_FIND_ROUTE			                                         = -0x00003613;
+    API_ERR_OVER_MAX_PKG_SIZE                                                       = -0x00003713;
+    API_ERR_INVALID_VERSION_FOR_TLV                                                 = -0x00003813;
+    API_ERR_BSON_SERIALIZE                                                          = -0x00003913;
+    API_ERR_BSON_DESERIALIZE                                                        = -0x00003a13;
+    API_ERR_ADD_RECORD                                                              = -0x00003b13;
+    API_ERR_ZONE_IS_NOT_EXIST													     = -0x00003c13;
+    API_ERR_TRAVERSER_IS_NOT_EXIST                                                  = -0x00003d13;
+
+
+    TXHDB_ERR_RECORD_NOT_EXIST                                                      = 0x00000105;
+    TXHDB_ERR_ITERATION_NO_MORE_RECORDS                                             = 0x00000205;
+    TXHDB_ERR_MUTEX_TRYLOCK_BUSY                                                    = 0x00000305;
+    TXHDB_ERR_MUTEX_TIMEDLOCK_TIMEOUT                                               = 0x00000405;
+    TXHDB_ERR_RWLOCK_TRYWRLOCK_BUSY                                                 = 0x00000505;
+    TXHDB_ERR_RWLOCK_TRYRDLOCK_BUSY                                                 = 0x00000605;
+    TXHDB_ERR_SPIN_TRYLOCK_BUSY                                                     = 0x00000705;
+    TXHDB_ERR_ITERATION_EXCEED_MAX_ALLOWED_TIME_OF_ONE_ITER                         = 0x00000805;
+    TXHDB_ERR_INVALID_ARGUMENTS                                                     = -0x00000105;
+    TXHDB_ERR_INVALID_MEMBER_VARIABLE_VALUE                                         = -0x00000205;
+    TXHDB_ERR_ALREADY_OPEN                                                          = -0x00000305;
+    TXHDB_ERR_MUTEX_LOCK_FAIL                                                       = -0x00000405;
+    TXHDB_ERR_MUTEX_TRYLOCK_FAIL                                                    = -0x00000505;
+    TXHDB_ERR_MUTEX_TIMEDLOCK_FAIL                                                  = -0x00000605;
+    TXHDB_ERR_MUTEX_UNLOCK_FAIL                                                     = -0x00000705;
+    TXHDB_ERR_RWLOCK_WRLOCK_FAIL                                                    = -0x00000805;
+    TXHDB_ERR_RWLOCK_TRYWRLOCK_FAIL                                                 = -0x00000905;
+    TXHDB_ERR_RWLOCK_RDLOCK_FAIL                                                    = -0x00000a05;
+    TXHDB_ERR_RWLOCK_TRYRDLOCK_FAIL                                                 = -0x00000b05;
+    TXHDB_ERR_RWLOCK_UNLOCK_FAIL                                                    = -0x00000c05;
+    TXHDB_ERR_SPIN_LOCK_FAIL                                                        = -0x00000d05;
+    TXHDB_ERR_SPIN_UNLOCK_FAIL                                                      = -0x00000e05;
+    TXHDB_ERR_FILE_EXISTS_BUT_STATUS_ERROR                                          = -0x00000f05;
+    TXHDB_ERR_FILE_OPEN_FAIL                                                        = -0x00001005;
+    TXHDB_ERR_FILE_READ_SIZE_INVALID                                                = -0x00001105;
+    TXHDB_ERR_FILE_INVALID_FILE_PATH                                                = -0x00001205;
+    TXHDB_ERR_FILE_LOCK_FILE_FAIL                                                   = -0x00001305;
+    TXHDB_ERR_FILE_NOT_A_REGULAR_FILE                                               = -0x00001405;
+    TXHDB_ERR_FILE_MMAP_FAIL                                                        = -0x00001505;
+    TXHDB_ERR_FILE_MUNMAP_FAIL                                                      = -0x00001605;
+    TXHDB_ERR_FILE_CLOSE_FAIL                                                       = -0x00001705;
+    TXHDB_ERR_FILE_SPACE_NOT_ENOUGH_IN_HEAD                                         = -0x00001805;
+    TXHDB_ERR_FILE_FTRUNCATE_FAIL                                                   = -0x00001905;
+    TXHDB_ERR_FILE_INCONSISTANT_FILE_SIZE                                           = -0x00001a05;
+    TXHDB_ERR_FILE_MSIZ_LESSER_THAN_TXHDB_WHOLE_REC_OFFSET                          = -0x00001b05;
+    TXHDB_ERR_FILE_MSIZ_CHANGE_NOT_PERMIT                                           = -0x00001c05;
+    TXHDB_ERR_FILE_FSTAT_FAIL                                                       = -0x00001d05;
+    TXHDB_ERR_FILE_MSYNC_FAIL                                                       = -0x00001e05;
+    TXHDB_ERR_FILE_FSYNC_FAIL                                                       = -0x00001f05;
+    TXHDB_ERR_FILE_FCNTL_LOCK_FILE_FAIL                                             = -0x00002005;
+    TXHDB_ERR_FILE_FCNTL_UNLOCK_FILE_FAIL                                           = -0x00002105;
+    TXHDB_ERR_FILE_PREAD_FAIL_WITH_SPECIFIED_ERRNO                                  = -0x00002205;
+    TXHDB_ERR_FILE_PREAD_FAIL_WITH_UNSPECIFIED_ERRNO                                = -0x00002305;
+    TXHDB_ERR_FILE_PWRITE_FAIL_WITH_SPECIFIED_ERRNO                                 = -0x00002405;
+    TXHDB_ERR_FILE_PWRITE_FAIL_WITH_UNSPECIFIED_ERRNO                               = -0x00002505;
+    TXHDB_ERR_FILE_READ_EXCEED_FILE_BOUNDARY                                        = -0x00002605;
+    TXHDB_ERR_FILE_READ_FAIL_DURING_COPY                                            = -0x00002705;
+    TXHDB_ERR_FILE_WRITE_FAIL_DURING_COPY                                           = -0x00002805;
+    TXHDB_ERR_FILE_INVALID_FREE_BLOCK_POOL_METADATA                                 = -0x00002905;
+    TXHDB_ERR_FILE_INVALID_MAGIC                                                    = -0x00002a05;
+    TXHDB_ERR_FILE_INVALID_LIBRARY_VERSION                                          = -0x00002b05;
+    TXHDB_ERR_FILE_INVALID_LIBRARY_REVISION                                         = -0x00002c05;
+    TXHDB_ERR_FILE_INVALID_FORMAT_VERSION                                           = -0x00002d05;
+    TXHDB_ERR_FILE_INVALID_EXTDATA_FORMAT_VERSION                                   = -0x00002e05;
+    TXHDB_ERR_FILE_INVALID_DBTYPE                                                   = -0x00002f05;
+    TXHDB_ERR_FILE_HEAD_CRC_UNMATCH                                                 = -0x00003005;
+    TXHDB_ERR_FILE_INVALID_METADATA                                                 = -0x00003105;
+    TXHDB_ERR_FILE_INVALID_HEADLEN                                                  = -0x00003205;
+    TXHDB_ERR_FILE_DESERIAL_HEAD_SPACE_NOT_ENOUGH                                   = -0x00003305;
+    TXHDB_ERR_FILE_SERIAL_HEAD_SPACE_NOT_ENOUGH                                     = -0x00003405;
+    TXHDB_ERR_FILE_DESERIAL_STAT_SPACE_NOT_ENOUGH                                   = -0x00003505;
+    TXHDB_ERR_FILE_SERIAL_STAT_SPACE_NOT_ENOUGH                                     = -0x00003605;
+    TXHDB_ERR_FILE_SERIAL_FREE_BLOCK_LIST_INFO_WRONG_BUFFLEN                        = -0x00003705;
+    TXHDB_ERR_FILE_IN_EXCEPTIONAL_STATUS                                            = -0x00003805;
+    TXHDB_ERR_DB_NOT_OPENED                                                         = -0x00003905;
+    TXHDB_ERR_DB_WRITE_NOT_PERMIT                                                   = -0x00003a05;
+    TXHDB_ERR_INVALID_OFFSET_FROM_BUCKET                                            = -0x00003b05;
+    TXHDB_ERR_READ_EXTDATA_EXCEED_BUFF_LENGTH                                       = -0x00003c05;
+    TXHDB_ERR_WRITE_EXTDATA_EXCEED_BUFF_LENGTH                                      = -0x00003d05;
+    TXHDB_ERR_FREE_BLOCK_IS_READ_WHEN_GETTING_RECORD                                = -0x00003e05;
+    TXHDB_ERR_INVALID_KEY_DATABLOCK_NUM                                             = -0x00003f05;
+    TXHDB_ERR_INVALID_VALUE_DATABLOCK_NUM                                           = -0x00004005;
+    TXHDB_ERR_GET_RECORD_EXCEED_BUFF_LENGTH                                         = -0x00004105;
+    TXHDB_ERR_COMPRESSION_FAIL                                                      = -0x00004205;
+    TXHDB_ERR_DECOMPRESSION_FAIL                                                    = -0x00004305;
+    TXHDB_ERR_INVALID_OFFSETINEXTDATA_AND_SIZE_WHEN_UPDATING_EXTDATA                = -0x00004405;
+    TXHDB_ERR_UNEXPECTED_FREEBLOCK                                                  = -0x00004505;
+    TXHDB_ERR_VALUE_APOW_LESSER_THAN_KEY_APOW                                       = -0x00004605;
+    TXHDB_ERR_DUPLICATED_FILE_PATH                                                  = -0x00004705;
+    TXHDB_ERR_INVALID_KEY_HEAD_SIZE_IN_TXHDB_META                                   = -0x00004805;
+    TXHDB_ERR_INVALID_FILE_SIZE                                                     = -0x00004905;
+    TXHDB_ERR_INVALID_FREE_BLOCK_SIZE                                               = -0x00004a05;
+    TXHDB_ERR_MMAP_MEMSIZE_CHANGE_NOT_PERMITTED                                     = -0x00004b05;
+    TXHDB_ERR_NEW_FILE_OBJ_FAIL                                                     = -0x00004c05;
+    TXHDB_ERR_RECORD_KEY_OFFSET_LESSER_THAN_TXHDB_WHOLE_REC_OFFSET                  = -0x00004d05;
+    TXHDB_ERR_RECORD_VALUE_OFFSET_LESSER_THAN_TXHDB_WHOLE_REC_OFFSET                = -0x00004e05;
+    TXHDB_ERR_RECORD_OFFSET_LESSER_THAN_TXHDB_WHOLE_REC_OFFSET                      = -0x00004f05;
+    TXHDB_ERR_KEY_BUFFSIZE_LESSER_THAN_KEY_HEADSIZE                                 = -0x00005005;
+    TXHDB_ERR_VALUE_BUFFSIZE_LESSER_THAN_VALUE_HEADSIZE                             = -0x00005105;
+    TXHDB_ERR_RECORD_SIZE_LESSER_THAN_KEY_HEADSIZE                                  = -0x00005205;
+    TXHDB_ERR_INVALID_BLOCK_MAGIC                                                   = -0x00005305;
+    TXHDB_ERR_INVALID_FREE_BLOCK_MAGIC                                              = -0x00005405;
+    TXHDB_ERR_INVALID_KEYMAGIC                                                      = -0x00005505;
+    TXHDB_ERR_INVALID_KEYSPLMAGIC                                                   = -0x00005605;
+    TXHDB_ERR_INVALID_VALMAGIC                                                      = -0x00005705;
+    TXHDB_ERR_INVALID_VALSPLMAGIC                                                   = -0x00005805;
+    TXHDB_ERR_UNSUPPORTED_KEY_FORMAT_VERSION                                        = -0x00005905;
+    TXHDB_ERR_UNSUPPORTED_KEY_SPLBLOCK_FORMAT_VERSION                               = -0x00005a05;
+    TXHDB_ERR_UNSUPPORTED_VALUE_FORMAT_VERSION                                      = -0x00005b05;
+    TXHDB_ERR_UNSUPPORTED_VALUE_SPLBLOCK_FORMAT_VERSION                             = -0x00005c05;
+    TXHDB_ERR_UNSUPPORTED_FREE_BLOCK_FORMAT_VERSION                                 = -0x00005d05;
+    TXHDB_ERR_KEY_HEAD_CRC_UNMATCH                                                  = -0x00005e05;
+    TXHDB_ERR_KEY_SPLBLOCK_HEAD_CRC_UNMATCH                                         = -0x00005f05;
+    TXHDB_ERR_VALUE_HEAD_CRC_UNMATCH                                                = -0x00006005;
+    TXHDB_ERR_VALUE_SPLBLOCK_HEAD_CRC_UNMATCH                                       = -0x00006105;
+    TXHDB_ERR_FREE_BLOCK_HEAD_CRC_UNMATCH                                           = -0x00006205;
+    TXHDB_ERR_FREE_BLOCK_LIST_INFO_CRC_UNMATCH                                      = -0x00006305;
+    TXHDB_ERR_GET_KEY_READ_BUFFER_FAIL                                              = -0x00006405;
+    TXHDB_ERR_GET_VALUE_READ_BUFFER_FAIL                                            = -0x00006505;
+    TXHDB_ERR_GET_LRU_VALUE_BUFFER_FAIL                                             = -0x00006605;
+    TXHDB_ERR_GET_EXTDATA_READ_BUFFER_FAIL                                          = -0x00006705;
+    TXHDB_ERR_KEY_BLOCK_BODYSIZE_GREATER_THAN_KEY_BODYSIZE                          = -0x00006805;
+    TXHDB_ERR_VALUE_BLOCK_BODYSIZE_GREATER_THAN_VALUE_BODYSIZE                      = -0x00006905;
+    TXHDB_ERR_NULL_RECORD_POINTER                                                   = -0x00006a05;
+    TXHDB_ERR_NULL_RECORD_WRITE_BUFF                                                = -0x00006b05;
+    TXHDB_ERR_SERIALIZE_RECORD_KEY_HEAD                                             = -0x00006c05;
+    TXHDB_ERR_INVALID_IDX_IN_STAT_NUMS_ARRAY                                        = -0x00006d05;
+    TXHDB_ERR_INVALID_ELEMNUM_OF_STAT_KEYNUMS                                       = -0x00006e05;
+    TXHDB_ERR_INVALID_ELEMNUM_OF_STAT_VALNUMS                                       = -0x00006f05;
+    TXHDB_ERR_PRINT_SPACE_NOT_ENOUGH                                                = -0x00007005;
+    TXHDB_ERR_LRU_SHIFTIN_NOT_ENOUGH_MEMORY                                         = -0x00007105;
+    TXHDB_ERR_LRU_SHIFTIN_NO_MORE_LRU_NODE                                          = -0x00007205;
+    TXHDB_ERR_LRU_ADJUST_NO_MORE_LRU_NODE                                           = -0x00007305;
+    TXHDB_ERR_LRU_SHIFTOUT_RECORD_ALREADY_OUTSIDE_OF_MEMORY                         = -0x00007405;
+    TXHDB_ERR_FILE_EXTDATA_LENGTH_CRC_UNMATCH                                       = -0x00007505;
+    TXHDB_ERR_FILE_EXTDATA_INVALID_LENGTH                                           = -0x00007605;
+    TXHDB_ERR_INVALID_VALUE_HEAD_SIZE_IN_TXHDB_META                                 = -0x00007705;
+    TXHDB_ERR_INVALID_SPLITDATABLOCK_HEAD_SIZE_IN_TXHDB_META                        = -0x00007805;
+    TXHDB_ERR_KEY_BUCKETIDX_UNMATCH                                                 = -0x00007905;
+    TXHDB_ERR_FILE_WRITE_SIZE_INVALID                                               = -0x00007a05;
+    TXHDB_ERR_MODIFY_STAT_UNSUPPORTED_OPERATION_TYPE                                = -0x00007b05;
+    TXHDB_ERR_INVALID_EXTDATAMAGIC                                                  = -0x00007c05;
+    TXHDB_ERR_INVALID_INTERNAL_LIST_TAIL_DURING_POP_LRU_NODELIST                    = -0x00007d05;
+    TXHDB_ERR_GET_LRUNODE_FAIL           								             = -0x00007e05;
+    TXHDB_ERR_LRUNODE_INVALID_FLAG        								             = -0x00007f05;
+    TXHDB_ERR_INVALID_FREE_BLOCK_NUM_TOO_MANY_FREE_BLOCKS                           = -0x00008005;
+    TXHDB_ERR_INVALID_ELEMNUM_OF_STAT_NOPADDING_SIZE_KEYNUMS                        = -0x00008105;
+    TXHDB_ERR_INVALID_ELEMNUM_OF_STAT_NOPADDING_SIZE_VALNUMS                        = -0x00008205;
+    TXHDB_ERR_ADD_LSIZE_EXCEEDS_MAX_TSD_VALUE_BUFF_SIZE                             = -0x00008305;
+    TXHDB_ERR_INTERNAL_CONSTANTS_ILLEGAL                                            = -0x00008405;
+    TXHDB_ERR_TOO_BIG_KEY_BIZ_SIZE                                                  = -0x00008505;
+    TXHDB_ERR_TOO_BIG_VALUE_BIZ_SIZE                                                = -0x00008605;
+    TXHDB_ERR_INDEX_NO_EXIST                                                        = -0x00008705;
+    TXHDB_ERR_INVALID_FREE_BLOCK_BASESIZE                                           = -0x00008805;
+    TXHDB_ERR_CANNOT_CREATE_MMAPSHM_BECAUSE_SHM_ALREADY_EXISTED                     = -0x00008905;
+    TXHDB_ERR_INVALID_GENSHM_KEY                                                    = -0x00008a05;
+    TXHDB_ERR_GENSHM_GET_FAIL                                                       = -0x00008b05;
+    TXHDB_ERR_GENSHM_CREATE_FAIL                                                    = -0x00008c05;
+    TXHDB_ERR_GENSHM_STAT_FAIL                                                      = -0x00008d05;
+    TXHDB_ERR_GENSHM_DOES_NOT_EXIST                                                 = -0x00008e05;
+    TXHDB_ERR_GENSHM_ATTACH_FAIL_BECAUSE_IT_IS_ALREADY_ATTACHED_BY_OTHER_PROCESSES  = -0x00008f05;
+    TXHDB_ERR_GENSHM_ATTACH_FAIL                                                    = -0x00009005;
+    TXHDB_ERR_FILE_INCONSISTANT_MSIZE                                               = -0x00009105;
+    TXHDB_ERR_INVALID_TCAP_GENSHM_MAGIC                                             = -0x00009205;
+    TXHDB_ERR_GENSHM_FIXED_HEAD_BUFFLEN_UNMATCH                                     = -0x00009305;
+    TXHDB_ERR_GENSHM_INVALID_HEADLEN                                                = -0x00009405;
+    TXHDB_ERR_GENSHM_HEAD_CRC_UNMATCH                                               = -0x00009505;
+    TXHDB_ERR_GENSHM_HEAD_INVALID_VERSION                                           = -0x00009605;
+    TXHDB_ERR_GENSHM_INVALID_FILETYPE                                               = -0x00009705;
+    TXHDB_ERR_GET_IPV4ADDR_FAIL                                                     = -0x00009805;
+    TXHDB_ERR_NO_VALID_IPV4ADDR_EXISTS                                              = -0x00009905;
+    TXHDB_ERR_TRANSFER_IPV4ADDR_FAIL                                                = -0x00009a05;
+    TXHDB_ERR_FILE_EXCEEDS_LSIZE_LIMIT                                              = -0x00009b05;
+    TXHDB_ERR_GENSHM_DETACH_FAIL                                                    = -0x00009c05;
+    TXHDB_ERR_TXHDB_HEAD_PARAMETERS_ERROR                                           = -0x00009d05;
+    TXHDB_ERR_TXHDB_HEAD_OLD_VERSION                                                = -0x00009e05;
+    TXHDB_ERR_TXHDB_SHM_COREINFO_UNMATCH                                            = -0x00009f05;
+    TXHDB_ERR_TXHDB_SHM_EXTDATA_UNMATCH                                             = -0x0000a005;
+    TXHDB_ERR_TXHDB_EXTDATA_CHECK_ERROR                                             = -0x0000a105;
+    TXHDB_ERR_CHUNK_BUFFS_CANNOT_BE_ALLOCED_IF_THEY_ARE_NOT_RELEASED                = -0x0000a205;
+    TXHDB_ERR_ALLOCATE_MEMORY_FAIL                                                  = -0x0000a305;
+    TXHDB_ERR_INVALID_CHUNK_RW_MANNER                                               = -0x0000a405;
+    TXHDB_ERR_FILE_PREAD_NOT_COMPLETE                                               = -0x0000a505;
+    TXHDB_ERR_FILE_PWRITE_NOT_COMPLETE                                              = -0x0000a605;
+    TXHDB_ERR_KEY_ONEBLOCK_BUT_NEXT_NOTNULL                                         = -0x0000a705;
+    TXHDB_ERR_VALUE_ONEBLOCK_BUT_NEXT_NOTNULL                                       = -0x0000a805;
+    TXHDB_ERR_VARINT_FORMAT_ERROR                                                   = -0x0000a905;
+    TXHDB_ERR_TXSTAT_ERROR                                                          = -0x0000aa05;
+
+
+    SVR_ERR_FAIL_ROUTE          				     								 = -0x0000010d;
+    SVR_ERR_FAIL_TIMEOUT          													 = -0x0000020d;
+    SVR_ERR_FAIL_SHORT_BUFF          				     							 = -0x0000030d;
+    SVR_ERR_FAIL_SYSTEM_BUSY          												 = -0x0000040d;
+    SVR_ERR_FAIL_RECORD_EXIST          				     					     = -0x0000050d;
+    SVR_ERR_FAIL_INVALID_FIELD_NAME          										 = -0x0000060d;
+    SVR_ERR_FAIL_VALUE_OVER_MAX_LEN          				     					 = -0x0000070d;
+    SVR_ERR_FAIL_INVALID_FIELD_TYPE          										 = -0x0000080d;
+    SVR_ERR_FAIL_SYNC_WRITE          				     							 = -0x0000090d;
+    SVR_ERR_FAIL_WRITE_RECORD          											 = -0x00000a0d;
+    SVR_ERR_FAIL_DELETE_RECORD          				     						 = -0x00000b0d;
+    SVR_ERR_FAIL_DATA_ENGINE          												 = -0x00000c0d;
+    SVR_ERR_FAIL_RESULT_OVERFLOW          											 = -0x00000d0d;
+    SVR_ERR_FAIL_INVALID_OPERATION          				     					 = -0x00000e0d;
+    SVR_ERR_FAIL_INVALID_SUBSCRIPT          										 = -0x00000f0d;
+    SVR_ERR_FAIL_INVALID_INDEX          				     						 = -0x0000100d;
+    SVR_ERR_FAIL_OVER_MAXE_FIELD_NUM          										 = -0x0000110d;
+    SVR_ERR_FAIL_MISS_KEY_FIELD          				     					     = -0x0000120d;
+    SVR_ERR_FAIL_NEED_SIGNUP          												 = -0x0000130d;
+    SVR_ERR_FAIL_CROSS_AUTH         												 = -0x0000140d;
+    SVR_ERR_FAIL_SIGNUP_FAIL          				     							 = -0x0000150d;
+    SVR_ERR_FAIL_SIGNUP_INVALID          											 = -0x0000160d;
+    SVR_ERR_FAIL_SIGNUP_INIT          				     							 = -0x0000170d;
+    SVR_ERR_FAIL_LIST_FULL          												 = -0x0000180d;
+    SVR_ERR_FAIL_LOW_VERSION          				     							 = -0x0000190d;
+    SVR_ERR_FAIL_HIGH_VERSION          											 = -0x00001a0d;
+    SVR_ERR_FAIL_INVALID_RESULT_FLAG         										 = -0x00001b0d;
+    SVR_ERR_FAIL_PROXY_STOPPING          				     						 = -0x00001c0d;
+    SVR_ERR_FAIL_SVR_READONLY          											 = -0x00001d0d;
+    SVR_ERR_FAIL_SVR_READONLY_BECAUSE_IN_SLAVE_MODE         					     = -0x00001e0d;
+    SVR_ERR_FAIL_INVALID_VERSION 													 = -0x00001f0d;
+    SVR_ERR_FAIL_SYSTEM_ERROR 														 = -0x0000200d;
+    SVR_ERR_FAIL_OVERLOAD 														     = -0x0000210d;
+    SVR_ERR_FAIL_NOT_ENOUGH_DADADISK_SPACE          								 = -0x0000220d;
+    SVR_ERR_FAIL_NOT_ENOUGH_ULOGDISK_SPACE          								 = -0x0000230d;
+    SVR_ERR_FAIL_UNSUPPORTED_PROTOCOL_MAGIC           								 = -0x0000240d;
+    SVR_ERR_FAIL_UNSUPPORTED_PROTOCOL_CMD             								 = -0x0000250d;
+    SVR_ERR_FAIL_HIGH_TABLE_META_VERSION             								 = -0x0000260d;
+    SVR_ERR_FAIL_MERGE_VALUE_FIELD                 								 = -0x0000270d;
+    SVR_ERR_FAIL_CUT_VALUE_FIELD                   								 = -0x0000280d;
+    SVR_ERR_FAIL_PACK_FIELD                        								 = -0x0000290d;
+    SVR_ERR_FAIL_UNPACK_FIELD                        								 = -0x00002a0d;
+    SVR_ERR_FAIL_LOW_API_VERSION                     								 = -0x00002b0d;
+    SVR_ERR_COMMAND_AND_TABLE_TYPE_IS_MISMATCH                     				 = -0x00002c0d;
+    SVR_ERR_FAIL_TO_FIND_CACHE                                  				     = -0x00002d0d;
+    SVR_ERR_FAIL_TO_FIND_META                                  				     = -0x00002e0d;
+    SVR_ERR_FAIL_TO_GET_CURSOR                                  				     = -0x00002f0d;
+    SVR_ERR_FAIL_OUT_OF_USER_DEF_RANGE                                              = -0x0000300d;
+    SVR_ERR_INVALID_ARGUMENTS                                                       = -0x0000310d;
+    SVR_ERR_SLAVE_READ_INVALID                                                      = -0x0000320d;
+    SVR_ERR_NULL_CACHE                                                              = -0x0000330d;
+    SVR_ERR_NULL_CURSOR                                                             = -0x0000340d;
+    SVR_ERR_METALIB_VERSION_LESS_THAN_ENTRY_VERSION                                 = -0x0000350d;
+    SVR_ERR_INVALID_SELECT_ID_FOR_UNION                                             = -0x0000360d;
+    SVR_ERR_CAN_NOT_FIND_SELECT_ENTRY_FOR_UNION                                     = -0x0000370d;
+    SVR_ERR_FAIL_DOCUMENT_PACK_VERSION                                              = -0x0000380d;
+    SVR_ERR_TCAPSVR_PROCESS_NOT_NORMAL                                              = -0x0000390d;
+    SVR_ERR_TBUSD_PROCESS_NOT_NORMAL                                                = -0x00003a0d;
+    SVR_ERR_INVALID_ARRAY_COUNT                                                     = -0x00003b0d;
+    SVR_ERR_REJECT_REQUEST_BECAUSE_ROUTE_IN_REJECT_STATUS                           = -0x00003c0d;
+    SVR_ERR_FAIL_GET_ROUTE_HASH_CODE                                                = -0x00003d0d;
+
+    TCAPDB_ERR_INVALID_PARAMS                                                       = -0x0000010f;
+
+
+    //TCAPROXY SYSTEM (module id 0x11) Error String defined below
+    PROXY_ERR_INVALID_PARAMS                                                        = -0x00000111;
+    PROXY_ERR_NO_NEED_ROUTE_BATCHGET_ACTION_MSG_WHEN_NODE_IS_IN_SYNC_STATUS         = -0x00000211;
+    PROXY_ERR_NO_NEED_ROUTE_WHEN_NODE_IS_IN_REJECT_STATUS                           = -0x00000311;
+    PROXY_ERR_PROBE_TIMEOUT                                                         = -0x00000411;
+    PROXY_ERR_SYSTEM_ERROR                                                          = -0x00000511;
+    PROXY_ERR_CONFIG_ERROR                                                          = -0x00000611;
+    PROXY_ERR_OVER_MAX_NODE                                                         = -0x00000711;
+    PROXY_ERR_INVALID_SPLIT_SIZE                                                    = -0x00000811;
+    PROXY_ERR_INVALID_ROUTE_INDEX                                                   = -0x00000911;
+    PROXY_ERR_CONNECT_SERVER                                                        = -0x00000a11;
+    PROXY_ERR_COMPOSE_MSG                                                           = -0x00000b11;
+    PROXY_ERR_ROUTE_MSG                                                             = -0x00000c11;
+    PROXY_ERR_SHORT_BUFFER                                                          = -0x00000d11;
+    PROXY_ERR_OVER_MAX_RECORD                                                       = -0x00000e11;
+    PROXY_ERR_INVALID_SERVICE_TABLE                                                 = -0x00000f11;
+    PROXY_ERR_REGISTER_FAILED                                                       = -0x00001011;
+    PROXY_ERR_CREATE_SESSION_HASH                                                   = -0x00001111;
+    PROXY_ERR_WRONG_STATUS                                                          = -0x00001211;
+    PROXY_ERR_UNPACK_MSG                                                            = -0x00001311;
+    PROXY_ERR_PACK_MSG                                                              = -0x00001411;
+    PROXY_ERR_SEND_MSG                                                              = -0x00001511;
+    PROXY_ERR_ALLOCATE_MEMORY                                                       = -0x00001611;
+    PROXY_ERR_PARSE_MSG                                                             = -0x00001711;
+    PROXY_ERR_INVALID_MSG                                                           = -0x00001811;
+    PROXY_ERR_FAILED_PROC_REQUEST_BECAUSE_NODE_IS_IN_SYNC_STASUS                    = -0x00001911;
+    PROXY_ERR_KEY_FIELD_NUM_IS_ZERO                                                 = -0x00001a11;
+    PROXY_ERR_LACK_OF_SOME_KEY_FIELDS                                               = -0x00001b11;
+    PROXY_ERR_FAILED_TO_FIND_NODE                                                   = -0x00001c11;
+    PROXY_ERR_INVALID_COMPRESS_TYPE                                                 = -0x00001d11;
+    PROXY_ERR_REQUEST_OVERSPEED                                                     = -0x00001e11;
+    PROXY_ERR_SWIFT_TIMEOUT                                                         = -0x00001f11;
+    PROXY_ERR_SWIFT_ERROR                                                           = -0x00002011;
+    PROXY_ERR_DIRECT_RESPONSE                                                       = -0x00002111;
+    PROXY_ERR_INIT_TLOG                                                             = -0x00002211;
+    PROXY_ERR_ASSISTANT_THREAD_NOT_RUN                                              = -0x00002311;
+
+
+    //TCAPCENTER SYSTEM (module id 0x15) Error String defined below
+    CENTER_ERR_INVALID_PARAMS                                                       = -0x00000115;
+    CENTER_ERR_TABLE_ALREADY_EXIST                                                  = -0x00000215;
+    CENTER_ERR_TABLE_NOT_EXIST                                                      = -0x00000315;
+
+    //TCAPDIR BUSINESS (module id 0x16) Error Code defined below
+    //......
+
+    //TCAPDIR SYSTEM (module id 0x17) Error Code defined below
+    DIR_ERR_SIGN_FAIL                                                         		 = -0x00000117;
+    DIR_ERR_LOW_VERSION                                                          	 = -0x00000217;
+    DIR_ERR_HIGH_VERSION                                                            = -0x00000317;
+    DIR_ERR_GET_DIR_SERVER_LIST                                                     = -0x00000417;
+    DIR_ERR_APP_IS_NOT_FOUNT                                                    	 = -0x00000517;
+    DIR_ERR_NOT_CONNECT_TCAPCENTER                                                  = -0x00000617;
+    DIR_ERR_ZONE_IS_NOT_FOUNT                                                    	 = -0x00000717;
+    DIR_ERR_HASH_TABLE_FAILED                                                    	 = -0x00000817;
+
+    //TCAPCOMMON BUSINESS (module id 0x18) Error Code defined below
+
+    //BSON ERROR
+    BSON_ERR_TYPE_IS_NOT_MATCH                                                      = -0x00000118;
+    BSON_ERR_INVALID_DATA_TYPE                                                      = -0x00000218;
+    BSON_ERR_INVALID_VALUE                                                          = -0x00000318;
+    BSON_ERR_BSON_TYPE_UNMATCH_TDR_TYPE                                             = -0x00000418;
+    BSON_ERR_BSON_TYPE_IS_NOT_SUPPORT_BY_TCAPLUS                                    = -0x00000518;
+    BSON_ERR_BSON_ARRAY_COUNT_IS_INVALID                                   		 = -0x00000618;
+    BSON_ERR_FAILED_TO_PARSE                                   					 = -0x00000718;
+    BSON_ERR_INVALID_FIELD_NAME_LENGTH                                  			 = -0x00000818;
+    BSON_ERR_INDEX_FIELD_NAME_NOT_EXIST_WITH_ARRAY_TYPE                             = -0x00000918;
+    BSON_ERR_INVALID_ARRAY_INDEX                             						 = -0x00000a18;
+    BSON_ERR_TDR_META_LIB_IS_NULL                             						 = -0x00000b18;
+    BSON_ERR_MATCHED_COUNT_GREATER_THAN_ONE                             			 = -0x00000c18;
+    BSON_ERR_NO_MATCHED                             								 = -0x00000d18;
+    BSON_ERR_GREATER_THAN_ARRAY_MAX_COUNT                             				 = -0x00000f18;
+    BSON_ERR_BSON_EXCEPTION                                                         = -0x00001018;
+    BSON_ERR_STD_EXCEPTION                                                          = -0x00001118;
+    BSON_ERR_INVALID_KEY                                                            = -0x00001218;
+    BSON_ERR_TDR_META_LIB_IS_INVALID                            					 = -0x00001318;
+
+
+
+    //TCAPTCAPCOMMON SYSTEM (module id 0x19) Error Code defined below
+    COMMON_ERR_INVALID_ARGUMENTS                                                    = -0x00000119;
+    COMMON_ERR_INVALID_MEMBER_VARIABLE_VALUE                                        = -0x00000219;
+    COMMON_ERR_SPINLOCK_INIT_FAIL                                                   = -0x00000319;
+    COMMON_ERR_SPINLOCK_DESTROY_FAIL                                                = -0x00000419;
+    COMMON_ERR_COMPRESS_BUF_NOT_ENOUGH                                              = -0x00000519;
+    COMMON_ERR_DECOMPRESS_BUF_NOT_ENOUGH                                            = -0x00000619;
+    COMMON_ERR_DECOMPRESS_INVALID_INPUT                                             = -0x00000719;
+    COMMON_ERR_CANNOT_FIND_COMPRESS_ALGORITHM                                       = -0x00000819;
+    COMMON_ERR_CANNOT_FIND_DECOMPRESS_ALGORITHM                                     = -0x00000919;
+    COMMON_ERR_COMPRESS_FAIL                                                        = -0x00000a19;
+    COMMON_ERR_DECOMPRESS_FAIL                                                      = -0x00000b19;
+    COMMON_ERR_INVALID_SWITCH_VALUE                                                 = -0x00000c19;
+    COMMON_ERR_LINUX_SYSTEM_CALL_FAIL                                               = -0x00000d19;
+    COMMON_ERR_NOT_FIND_STAT_CACHE_VALUE                                            = -0x00000e19;
+    COMMON_ERR_LZO_CHECK_FAIL                                                       = -0x00000f19;
+
+
+    // Non-error (for information purpose)
+    COMMON_INFO_DATA_NOT_MODIFIED                                                   = 0x00000120;
+
+    MAX_MODULE_NUM = 0x1a;
+    MAX_POSITIVE_ERR_CODE_NUM_PER_MODULE = 0x10;
+    MAX_NEGATIVE_ERR_CODE_NUM_PER_MODULE = 0x100;
+
+    //GENERAL BUSINESS (module id 0x00) Error Code defined below
+    GEN_ERR_SUC                                                                     = 0x00000000;
+    GEN_ERR_ERR                                                                     = -0x00000100;
+    GEN_ERR_INVALID_ARGUMENTS                                                       = -0x00000101;
+    GEN_ERR_UNSUPPORT_OPERATION                                                     = -0x00000102;
+    GEN_ERR_NOT_ENOUGH_MEMORY                                                       = -0x00000103;
+    GEN_ERR_ECMGR_INVALID_MODULE_ID                                                 = -0x00000200;
+    GEN_ERR_ECMGR_INVALID_ERROR_CODE                                                = -0x00000300;
+    GEN_ERR_ECMGR_NULL_ERROR_STRING                                                 = -0x00000400;
+    GEN_ERR_ECMGR_DUPLICATED_ERROR_CODE                                             = -0x00000500;
+    GEN_ERR_TXLOG_NULL_POINTER_FROM_TSD                                             = -0x00000600;
+    GEN_ERR_TABLE_READONLY                                                          = -0x00000700;
+
+    //GENERAL SYSTEM (module id 0x01) Error String defined below
+    //......
+
+    //LINELOC BUSINESS (module id 0x02) Error Code defined below
+    //LOC_ERR__0x00000102                                                             = -0x00000102;
+    LOC_ERR__0x00000202                                                             = -0x00000202;
+    LOC_ERR__0x00000302                                                             = -0x00000302;
+    LOC_ERR__0x00000402                                                             = -0x00000402;
+    LOC_ERR__0x00000502                                                             = -0x00000502;
+    LOC_ERR__0x00000602                                                             = -0x00000602;
+    LOC_ERR__0x00000702                                                             = -0x00000702;
+    LOC_ERR__0x00000802                                                             = -0x00000802;
+    LOC_ERR__0x00000902                                                             = -0x00000902;
+    LOC_ERR__0x00000A02                                                             = -0x00000A02;
+    LOC_ERR__0x00000B02                                                             = -0x00000B02;
+    LOC_ERR__0x00000C02                                                             = -0x00000C02;
+    LOC_ERR__0x00000D02                                                             = -0x00000D02;
+    LOC_ERR__0x00000E02                                                             = -0x00000E02;
+    LOC_ERR__0x00000F02                                                             = -0x00000F02;
+    LOC_ERR__0x00001002                                                             = -0x00001002;
+    LOC_ERR__0x00001102                                                             = -0x00001102;
+    LOC_ERR__0x00001202                                                             = -0x00001202;
+    LOC_ERR__0x00001302                                                             = -0x00001302;
+    LOC_ERR__0x00001402                                                             = -0x00001402;
+    LOC_ERR__0x00001502                                                             = -0x00001502;
+    LOC_ERR__0x00001602                                                             = -0x00001602;
+    LOC_ERR__0x00001702                                                             = -0x00001702;
+    LOC_ERR__0x00001802                                                             = -0x00001802;
+    LOC_ERR__0x00001902                                                             = -0x00001902;
+    LOC_ERR__0x00001A02                                                             = -0x00001A02;
+    LOC_ERR__0x00001B02                                                             = -0x00001B02;
+    LOC_ERR__0x00001C02                                                             = -0x00001C02;
+    LOC_ERR__0x00001D02                                                             = -0x00001D02;
+    LOC_ERR__0x00001E02                                                             = -0x00001E02;
+    LOC_ERR__0x00001F02                                                             = -0x00001F02;
+    LOC_ERR__0x00002002                                                             = -0x00002002;
+    LOC_ERR__0x00002802                                                             = -0x00002802;
+    LOC_ERR__0x00003002                                                             = -0x00003002;
+    LOC_ERR__0x00003802                                                             = -0x00003802;
+    LOC_ERR__0x00004002                                                             = -0x00004002;
+    LOC_ERR__0x00004802                                                             = -0x00004802;
+    LOC_ERR__0x00005002                                                             = -0x00005002;
+    LOC_ERR__0x00005802                                                             = -0x00005802;
+    LOC_ERR__0x00006002                                                             = -0x00006002;
+    LOC_ERR__0x00006802                                                             = -0x00006802;
+    LOC_ERR__0x00007002                                                             = -0x00007002;
+    LOC_ERR__0x00007802                                                             = -0x00007802;
+    LOC_ERR__0x00008002                                                             = -0x00008002;
+    LOC_ERR__0x00008802                                                             = -0x00008802;
+    LOC_ERR__0x00009002                                                             = -0x00009002;
+    LOC_ERR__0x00009802                                                             = -0x00009802;
+    LOC_ERR__0x0000A002                                                             = -0x0000A002;
+    LOC_ERR__0x0000A802                                                             = -0x0000A802;
+    LOC_ERR__0x0000B002                                                             = -0x0000B002;
+    LOC_ERR__0x0000B802                                                             = -0x0000B802;
+    LOC_ERR__0x0000C002                                                             = -0x0000C002;
+    LOC_ERR__0x0000C802                                                             = -0x0000C802;
+
+    LOC_ERR__0x0000FF02                                                             = -0x0000FF02;
+}
+
+

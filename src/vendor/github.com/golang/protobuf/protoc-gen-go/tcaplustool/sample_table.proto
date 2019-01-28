@@ -1,0 +1,11 @@
+import "extensions.proto";
+package TcaplusGateSvr;
+message DBUserSevenSignUp
+{
+    option (table_name) = "user_seven_signup";
+
+    required int32 appid = 1 [(b_key) = 1];
+    required uint64 uin = 2 [(b_key) = 1];
+    optional uint32 last_sign_time = 3 ;
+    optional uint32 sign_num = 4;
+}
