@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/garyburd/redigo/redis"
-	"time"
 )
 
-func main() {
+func main() {/*
+//123
 	redisConn, err := redis.Dial("tcp", ":6379")
 	if err != nil {
 		fmt.Println("Dial err")
@@ -14,24 +13,28 @@ func main() {
 	}
 	defer redisConn.Close()
 
-	cnt := 1112
+	cnt := 100
 
 	key := "alonzo_test_hash"
-	array := []int{}
-	for n := 1; n < cnt; n++ {
-		array = append(array, n)
-		//redisConn.Do("hset", key, n, 1)
-	}
+	array := RenderInts()
+
 	fmt.Println("len:", len(array))
 	s := time.Now()
 
 	_, err = redis.Ints(redisConn.Do("hmget", key, array))
 	if err != nil {
-		fmt.Println("hmget error")
+		fmt.Println("hmGet error")
 		return
 	}
 
 	fmt.Println(time.Since(s))
+*/
+	m:= map[int]string{}
+	m[1]="a"
+	for k := range m {
+		fmt.Println(k)
+	}
+
 
 	/*s1 := time.Now()
 	for n := 1; n < cnt; n++ {
